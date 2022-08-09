@@ -6,7 +6,7 @@
 /*   By: armaxima <<armaxima@student.42.fr>>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 17:34:10 by armaxima          #+#    #+#             */
-/*   Updated: 2022/08/04 19:13:42 by armaxima         ###   ########.fr       */
+/*   Updated: 2022/08/09 19:38:41 by armaxima         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define VECTOR_HPP
 
 # include <memory>
+# include <iostream>
 # include "vector_iterator.hpp"
 # include "utils.hpp"
 
@@ -32,8 +33,8 @@ namespace ft
 		typedef typename Allocator::pointer				pointer;
 		typedef typename Allocator::const_pointer		const_pointer;
 
-		class 												iterator;
-		class 												const_iterator;
+		typedef ft::iterator<value_type>					iterator;
+		typedef ft::const_iterator<value_type>				const_iterator;
 		typedef ft::reverse_iterator<iterator>				reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 
@@ -43,12 +44,12 @@ namespace ft
 		size_type				_size;
 		size_type				_capacity;
 	public:
-		vector() : _size(0), _capacity(0), _alloc()
+		vector() : _alloc(), _size(0), _capacity(0)
 		{
 			_data = _alloc.allocate(0);
 		};
 
-		explicit vector( const Allocator& alloc ) : _size(0), _capacity(0), _alloc(alloc)
+		explicit vector( const Allocator& alloc ) : _alloc(alloc), _size(0), _capacity(0)
 		{
 			_data = _alloc.allocate(0);
 		};
@@ -56,7 +57,7 @@ namespace ft
 		explicit vector( size_type count,
 				const T& value,
 				const Allocator& alloc = Allocator()) :
-			_size(count), _capacity(count), _alloc(alloc)
+			_alloc(alloc), _size(count), _capacity(count)
 		{
 			_data = _alloc.allocate(count);
 			for (size_type i = 0; i < count; i++)
@@ -64,21 +65,38 @@ namespace ft
 		};
 
 		template< class InputIt >
+		size_type	distance(InputIt first, InputIt last)
+		{
+			size_type n = 0;
+			while (first != last)
+			{
+				++first;
+				n++;
+			}
+			return (n);
+		}
+
+		template< class InputIt >
 		vector( InputIt first,
 				InputIt last,
 				const Allocator& alloc = Allocator(),
-				typename ft::enable_if<ft::is_integral<InputIt>::value, InputIt>::type = InputIt() ) :
-				_alloc(alloc), _size(0), _capacity(0)
+				typename ft::enable_if<ft::is_integral<typename InputIt::value_type>::value, InputIt>::type = InputIt() ) :
+				_data(NULL), _alloc(alloc), _size(0), _capacity(0)
 		{
-			difference_type n = ft::distance(first, last);
-			_data = _alloc.allocate(n);
-			for (size_type i = 0; first != last; first++, i++)
-				_alloc.construct(_data + i, *first);
+			size_type n = distance(first, last);
+			this->_data = _alloc.allocate(n);
+			this->_capacity = n;
+			this->_size = n;
+			for (size_type i = 0; i != n; i++)
+			{
+				_alloc.construct(this->_data + i, *first);
+				first++;
+			}
 		};
 
-		vector( const vector& other ) : _size(other._size),
-										_capacity(other._capacity),
-										_alloc(other._alloc)
+		vector( const vector& other ) : _alloc(other._alloc),
+										_size(other._size),
+										_capacity(other._capacity)
 		{
 			_data = _alloc.allocate(other._capacity);
 			for (size_type i = 0; i < _size; i++)
@@ -119,17 +137,17 @@ namespace ft
 				_data = _alloc.allocate(count);
 				this->_capacity = count;
 			}
+			this->_size = count;
 			for (size_type i = 0; i < _size; i++)
 				_alloc.construct(_data + i, value);
-			this->_size = count;
 		};
 
 		template< class InputIt >
 		void assign(	InputIt first,
 						InputIt last,
-						typename ft::enable_if<ft::is_integral<InputIt>::value, InputIt>::type = InputIt() )
+						typename ft::enable_if<ft::is_integral<typename InputIt::value_type>::value, InputIt>::type = InputIt() )
 		{
-			difference_type n = ft::distance(first, last);
+			size_type n = distance(first, last);
 			for (size_type i = 0; i < _size; i++)
 				_alloc.destroy(_data + i);
 			if (this->_capacity < n)
@@ -204,22 +222,22 @@ namespace ft
 
 		iterator begin()
 		{
-			return this->_data;
+			return iterator(this->_data);
 		};
 
 		const_iterator begin() const
 		{
-			return this->_data;
+			return const_iterator(this->_data);
 		};
 
 		iterator end()
 		{
-			return this->_data + this->_size;
+			return iterator(this->_data + this->_size);
 		};
 
 		const_iterator end() const
 		{
-			return this->_data + this->_size;
+			return const_iterator(this->_data + this->_size);
 		};
 
 		reverse_iterator rbegin()
@@ -256,7 +274,7 @@ namespace ft
 
 		size_type max_size() const
 		{
-			return std::numeric_limits<difference_type>::max();
+			return this->_alloc.max_size();
 		};
 
 		void reserve( size_type new_cap )
@@ -290,12 +308,68 @@ namespace ft
 			this->_size = 0;
 		};
 
+		void push_back( const T& value )
+		{
+			if (this->_capacity == this->_size)
+			{
+				this->_capacity *= 2;
+				value_type* tmp = this->_alloc.allocate(this->_capacity);
+				for (size_type i = 0; i < _size; i++)
+					_alloc.construct(tmp + i, this->_data[i]);
+				for (size_type i = 0; i < _size; i++)
+					_alloc.destroy(_data + i);
+				_alloc.deallocate(_data, _capacity);
+				this->_data = tmp;
+			}
+			_alloc.construct(_data + this->_size, value);
+			this->_size++;
+		}
+
 		iterator insert( iterator pos, const T& value )
 		{
+			if (this->_size == this->_capacity)
+				this->_capacity *= 2;
+			value_type* tmp = this->_alloc.allocate(this->_capacity);
+			size_type n = distance(begin(), pos);
 
-		};
-		iterator insert( const_iterator pos, T&& value );
-		void insert( iterator pos, size_type count, const T& value );
+			size_type i = 0;
+			for (; i < n; i++)
+				this->_alloc.construct(tmp + i, this->_data[i]);
+			this->_alloc.construct(tmp + i++, value);
+			for (; i - 1 < this->_size; i++)
+				this->_alloc.construct(tmp + i, this->_data[i - 1]);
+
+			this->~vector();
+
+			this->_size++;
+			this->_data = tmp;
+			return iterator((&this->_data[n]));
+		}
+
+		void insert( iterator pos, size_type count, const T& value )
+		{
+			size_type n = distance(begin(), pos);
+			if (this->_size == 0)
+				this->_capacity = count;
+			else if (this->_size + count > this->_capacity)
+				this->_capacity *= 2;
+			value_type* tmp = this->_alloc.allocate(this->_capacity);
+
+			size_type i = 0;
+			for (; i < n; i++)
+				this->_alloc.construct(tmp + i, this->_data[i]);
+			size_type q = i;
+			for (size_type j = 0; j < count; j++)
+				this->_alloc.construct(tmp + i++, value);
+			for (; q < size(); q++)
+				this->_alloc.construct(tmp + i++, this->_data[q]);
+
+			this->~vector();
+
+			this->_size += count;
+			this->_data = tmp;
+		}
+
 		template< class InputIt >
 		void insert( iterator pos, InputIt first, InputIt last );
 	};
