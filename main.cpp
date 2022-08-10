@@ -89,11 +89,6 @@ int	main()
 	print_vector(v42);
 	print_params(v42);
 
-	std::cout << "vchar: " << std::endl;
-	NM::vector<char> vchar(5, 'a');
-	print_vector(vchar);
-	print_params(vchar);
-
 	std::cout << "v_copy: " << std::endl;
 	NM::vector<int> v_copy(v42);
 	print_vector(v_copy);
@@ -137,6 +132,32 @@ int	main()
 
 	std::cout << "insert v42 range: " << std::endl;
 	v42.insert(v42.begin() + 3, (size_t) 5, 77);
+	print_vector(v42);
+	print_params(v42);
+
+	std::cout << "insert v42 range +: " << std::endl;
+	NM::vector<int> v2(7, 44);
+	v42.insert(v42.begin() + 3, v2.begin() + 1, v2.end() - 1);
+	print_vector(v42);
+	print_params(v42);
+
+	std::cout << "erase v42:" << std::endl;
+	v42.erase(v42.begin() + 2);
+	print_vector(v42);
+	print_params(v42);
+
+	std::cout << "erase v42 range:" << std::endl;
+	v42.erase(v42.begin() + 2, v42.end() - 5);
+	print_vector(v42);
+	print_params(v42);
+
+	std::cout << "pop_back v42:" << std::endl;
+	v42.pop_back();
+	print_vector(v42);
+	print_params(v42);
+
+	std::cout << "swap v42:" << std::endl;
+	v42.swap(v2);
 	print_vector(v42);
 	print_params(v42);
 

@@ -6,7 +6,7 @@
 /*   By: armaxima <<armaxima@student.42.fr>>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 17:34:06 by armaxima          #+#    #+#             */
-/*   Updated: 2022/08/09 19:05:27 by armaxima         ###   ########.fr       */
+/*   Updated: 2022/08/10 12:48:00 by armaxima         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,10 +172,10 @@ namespace ft
 			return iter::operator-(n);
 		}
 
-		//difference_type	operator-(const random_iterator<T> &n) const
-		//{
-		//	return iter::operator-(n);
-		//}
+		difference_type	operator-(const random_iterator<T> &n) const
+		{
+			return iter::operator-(n);
+		}
 		//friend iterator	operator+(difference_type n, const iterator &it)
 		//{
 		//	return it.operator+(n);
@@ -289,11 +289,11 @@ namespace ft
 			return (tmp);
 		}
 
-		//template <class Iter>
-		//difference_type	operator-(const reverse_iterator<Iter> &other)
-		//{
-		//	return other.get_base().operator-(this->base_iterator);
-		//};
+		template <class Iter>
+		difference_type	operator-(const reverse_iterator<Iter> &other)
+		{
+			return other.get_base().operator-(this->base_iterator);
+		};
 
 		reverse_iterator	operator+(difference_type n) const
 		{

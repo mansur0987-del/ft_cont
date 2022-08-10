@@ -6,7 +6,7 @@
 /*   By: armaxima <<armaxima@student.42.fr>>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 17:34:10 by armaxima          #+#    #+#             */
-/*   Updated: 2022/08/09 19:38:41 by armaxima         ###   ########.fr       */
+/*   Updated: 2022/08/10 17:05:46 by armaxima         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,17 +64,17 @@ namespace ft
 				_alloc.construct(_data + i, value);
 		};
 
-		template< class InputIt >
-		size_type	distance(InputIt first, InputIt last)
-		{
-			size_type n = 0;
-			while (first != last)
-			{
-				++first;
-				n++;
-			}
-			return (n);
-		}
+		//template< class InputIt >
+		//size_type	distance(InputIt first, InputIt last)
+		//{
+		//	size_type n = 0;
+		//	while (first != last)
+		//	{
+		//		++first;
+		//		n++;
+		//	}
+		//	return (n);
+		//}
 
 		template< class InputIt >
 		vector( InputIt first,
@@ -83,7 +83,7 @@ namespace ft
 				typename ft::enable_if<ft::is_integral<typename InputIt::value_type>::value, InputIt>::type = InputIt() ) :
 				_data(NULL), _alloc(alloc), _size(0), _capacity(0)
 		{
-			size_type n = distance(first, last);
+			size_type n = last - first;
 			this->_data = _alloc.allocate(n);
 			this->_capacity = n;
 			this->_size = n;
@@ -147,7 +147,7 @@ namespace ft
 						InputIt last,
 						typename ft::enable_if<ft::is_integral<typename InputIt::value_type>::value, InputIt>::type = InputIt() )
 		{
-			size_type n = distance(first, last);
+			size_type n = last - first;
 			for (size_type i = 0; i < _size; i++)
 				_alloc.destroy(_data + i);
 			if (this->_capacity < n)
@@ -330,7 +330,7 @@ namespace ft
 			if (this->_size == this->_capacity)
 				this->_capacity *= 2;
 			value_type* tmp = this->_alloc.allocate(this->_capacity);
-			size_type n = distance(begin(), pos);
+			size_type n = pos - begin();
 
 			size_type i = 0;
 			for (; i < n; i++)
@@ -348,7 +348,7 @@ namespace ft
 
 		void insert( iterator pos, size_type count, const T& value )
 		{
-			size_type n = distance(begin(), pos);
+			size_type n = pos - begin();
 			if (this->_size == 0)
 				this->_capacity = count;
 			else if (this->_size + count > this->_capacity)
@@ -371,7 +371,95 @@ namespace ft
 		}
 
 		template< class InputIt >
-		void insert( iterator pos, InputIt first, InputIt last );
+		void insert( iterator pos, InputIt first, InputIt last ,
+					typename ft::enable_if<ft::is_integral<typename InputIt::value_type>::value, InputIt>::type = InputIt() )
+		{
+			size_type pos_n = pos - begin();
+			size_type count = last - first;
+			if (this->_size == 0)
+				this->_capacity = count;
+			else if (this->_size + count > this->_capacity)
+				this->_capacity *= 2;
+			value_type* tmp = this->_alloc.allocate(this->_capacity);
+
+			size_type i = 0;
+			for (; i < pos_n; i++)
+				this->_alloc.construct(tmp + i, this->_data[i]);
+			size_type q = i;
+			for(; first != last; first++)
+				this->_alloc.construct(tmp + i++, *first);
+			for (; q < size(); q++)
+				this->_alloc.construct(tmp + i++, this->_data[q]);
+
+			this->~vector();
+
+			this->_size += count;
+			this->_data = tmp;
+		}
+
+		iterator erase( iterator pos )
+		{
+			iterator tmp = pos;
+			iterator next = pos + 1;
+
+			while (next != end())
+			{
+				*pos = *next;
+				next++;
+				pos++;
+			}
+
+			this->_alloc.destroy(&this->_data[--this->_size]);
+			return (tmp);
+		}
+
+		iterator erase( iterator first, iterator last )
+		{
+			iterator tmp = first;
+			size_type len = last - first;
+
+			while (last != end())
+			{
+				*first = *last;
+				first++;
+				last++;
+			}
+
+			for (; len > 0; len--)
+				this->_alloc.destroy(&this->_data[--this->_size]);
+			return (tmp);
+		}
+
+		void pop_back()
+		{
+			this->_alloc.destroy(&this->_data[--this->_size]);
+		}
+
+		void resize( size_type count, T value = T() );
+
+		template <class TMP>
+		void	swap(TMP &a, TMP &b)
+		{
+			TMP c = a;
+			a = b;
+			b = c;
+		}
+
+		void swap( vector& other )
+		{
+			swap(this->_alloc, other._alloc);
+			swap(this->_data, other._data);
+			swap(this->_size, other._size);
+			swap(this->_capacity, other._capacity);
+		}
+
+	};
+
+	template< class T, class Alloc >
+	void swap( ft::vector<T,Alloc>& lhs,
+			ft::vector<T,Alloc>& rhs )
+	{
+		lhs.swap(rhs);
 	};
 }
 

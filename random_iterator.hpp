@@ -6,7 +6,7 @@
 /*   By: armaxima <<armaxima@student.42.fr>>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 14:28:48 by armaxima          #+#    #+#             */
-/*   Updated: 2022/08/09 19:04:19 by armaxima         ###   ########.fr       */
+/*   Updated: 2022/08/10 12:46:18 by armaxima         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,10 @@ namespace ft
 			return random_iterator(this->ptr_value - n);
 		};
 
-		//difference_type	operator-(const random_iterator &it) const
-		//{
-		//	return this->ptr_value - it.ptr_value;
-		//};
+		difference_type	operator-(const random_iterator &it) const
+		{
+			return this->ptr_value - it.ptr_value;
+		};
 
 		//friend random_iterator<vector_type>	operator+(difference_type n, const random_iterator& it)
 		//{

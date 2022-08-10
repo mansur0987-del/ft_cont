@@ -1,0 +1,211 @@
+vector from FT
+v: 
+Vector Iterator date: 
+
+Vector Const Iterator date: 
+
+Vector Reverse Iterator date: 
+
+Vector empty: 1
+Vector size: 0
+Vector max size: 4611686018427387903
+Vector capacity: 0
+
+
+v42: 
+Vector Iterator date: 42 42 42 42 42 
+
+Vector Const Iterator date: 42 42 42 42 42 
+
+Vector Reverse Iterator date: 42 42 42 42 42 
+
+Vector empty: 0
+Vector size: 5
+Vector max size: 4611686018427387903
+Vector capacity: 5
+
+
+v_copy: 
+Vector Iterator date: 42 42 42 42 42 
+
+Vector Const Iterator date: 42 42 42 42 42 
+
+Vector Reverse Iterator date: 42 42 42 42 42 
+
+Vector empty: 0
+Vector size: 5
+Vector max size: 4611686018427387903
+Vector capacity: 5
+
+
+v_const: 
+Vector Const Iterator date: 7 7 7 
+
+Vector empty: 0
+Vector size: 3
+Vector max size: 4611686018427387903
+Vector capacity: 3
+
+
+v_range: 
+Vector Iterator date: 42 
+
+Vector Const Iterator date: 42 
+
+Vector Reverse Iterator date: 42 
+
+Vector empty: 0
+Vector size: 1
+Vector max size: 4611686018427387903
+Vector capacity: 1
+
+
+assign v: 
+Vector Iterator date: 50 50 50 50 50 50 50 
+
+Vector Const Iterator date: 50 50 50 50 50 50 50 
+
+Vector Reverse Iterator date: 50 50 50 50 50 50 50 
+
+Vector empty: 0
+Vector size: 7
+Vector max size: 4611686018427387903
+Vector capacity: 7
+
+
+push_back v: 
+Vector Iterator date: 50 50 50 50 50 50 50 1 
+
+Vector Const Iterator date: 50 50 50 50 50 50 50 1 
+
+Vector Reverse Iterator date: 1 50 50 50 50 50 50 50 
+
+Vector empty: 0
+Vector size: 8
+Vector max size: 4611686018427387903
+Vector capacity: 14
+
+
+front v: 50
+back v: 1
+at = 0 v: 50
+at = 1 v: 50
+at = 7 v: 1
+
+assign range v: 
+Vector Iterator date: 42 42 42 
+
+Vector Const Iterator date: 42 42 42 
+
+Vector Reverse Iterator date: 42 42 42 
+
+Vector empty: 0
+Vector size: 3
+Vector max size: 4611686018427387903
+Vector capacity: 14
+
+
+insert v42: 
+Vector Iterator date: 42 99 42 42 42 42 
+
+Vector Const Iterator date: 42 99 42 42 42 42 
+
+Vector Reverse Iterator date: 42 42 42 42 99 42 
+
+Vector empty: 0
+Vector size: 6
+Vector max size: 4611686018427387903
+Vector capacity: 10
+
+
+insert v42 range: 
+Vector Iterator date: 42 99 42 77 77 77 77 77 42 42 42 
+
+Vector Const Iterator date: 42 99 42 77 77 77 77 77 42 42 42 
+
+Vector Reverse Iterator date: 42 42 42 77 77 77 77 77 42 99 42 
+
+Vector empty: 0
+Vector size: 11
+Vector max size: 4611686018427387903
+Vector capacity: 20
+
+
+insert v42 range +: 
+Vector Iterator date: 42 99 42 44 44 44 44 44 77 77 77 77 77 42 42 42 
+
+Vector Const Iterator date: 42 99 42 44 44 44 44 44 77 77 77 77 77 42 42 42 
+
+Vector Reverse Iterator date: 42 42 42 77 77 77 77 77 44 44 44 44 44 42 99 42 
+
+Vector empty: 0
+Vector size: 16
+Vector max size: 4611686018427387903
+Vector capacity: 20
+
+
+erase v42:
+Vector Iterator date: 42 99 44 44 44 44 44 77 77 77 77 77 42 42 42 
+
+Vector Const Iterator date: 42 99 44 44 44 44 44 77 77 77 77 77 42 42 42 
+
+Vector Reverse Iterator date: 42 42 42 77 77 77 77 77 44 44 44 44 44 99 42 
+
+Vector empty: 0
+Vector size: 15
+Vector max size: 4611686018427387903
+Vector capacity: 20
+
+
+erase v42 range:
+Vector Iterator date: 42 99 77 77 42 42 42 
+
+Vector Const Iterator date: 42 99 77 77 42 42 42 
+
+Vector Reverse Iterator date: 42 42 42 77 77 99 42 
+
+Vector empty: 0
+Vector size: 7
+Vector max size: 4611686018427387903
+Vector capacity: 20
+
+
+pop_back v42:
+Vector Iterator date: 42 99 77 77 42 42 
+
+Vector Const Iterator date: 42 99 77 77 42 42 
+
+Vector Reverse Iterator date: 42 42 77 77 99 42 
+
+Vector empty: 0
+Vector size: 6
+Vector max size: 4611686018427387903
+Vector capacity: 20
+
+
+swap v42:
+Vector Iterator date: 44 44 44 44 44 44 44 
+
+Vector Const Iterator date: 44 44 44 44 44 44 44 
+
+Vector Reverse Iterator date: 44 44 44 44 44 44 44 
+
+Vector empty: 0
+Vector size: 7
+Vector max size: 4611686018427387903
+Vector capacity: 7
+
+
+clear v42: 
+Vector Iterator date: 
+
+Vector Const Iterator date: 
+
+Vector Reverse Iterator date: 
+
+Vector empty: 1
+Vector size: 0
+Vector max size: 4611686018427387903
+Vector capacity: 7
+
+
