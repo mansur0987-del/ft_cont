@@ -6,7 +6,7 @@
 /*   By: armaxima <<armaxima@student.42.fr>>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 17:34:10 by armaxima          #+#    #+#             */
-/*   Updated: 2022/08/10 17:05:46 by armaxima         ###   ########.fr       */
+/*   Updated: 2022/08/10 17:46:27 by armaxima         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -435,7 +435,25 @@ namespace ft
 			this->_alloc.destroy(&this->_data[--this->_size]);
 		}
 
-		void resize( size_type count, T value = T() );
+		void resize( size_type count, T value = T() )
+		{
+			if (this->_capacity < count)
+			{
+				this->_capacity = count;
+				value_type* tmp = this->_alloc.allocate(this->_capacity);
+				iterator first = begin();
+				for (size_type i = 0; first != end(); first++, i++)
+					_alloc.construct(tmp + i, *first);
+				this->~vector();
+				this->_data = tmp;
+			}
+			if (this->_size < count)
+			{
+				for (size_type i = this->_size; i != count; i++)
+					_alloc.construct(this->_data + i, value);
+			}
+			this->_size = count;
+		}
 
 		template <class TMP>
 		void	swap(TMP &a, TMP &b)

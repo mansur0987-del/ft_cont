@@ -161,6 +161,21 @@ int	main()
 	print_vector(v42);
 	print_params(v42);
 
+	std::cout << "ft::swap v42:" << std::endl;
+	NM::swap(v2, v42);
+	print_vector(v42);
+	print_params(v42);
+
+	std::cout << "resize_0 v42:" << std::endl;
+	v42.resize(3, 111);
+	print_vector(v42);
+	print_params(v42);
+
+	std::cout << "resize_1 v42:" << std::endl;
+	v42.resize(10, 111);
+	print_vector(v42);
+	print_params(v42);
+
 	std::cout << "clear v42: " << std::endl;
 	v42.clear();
 	print_vector(v42);

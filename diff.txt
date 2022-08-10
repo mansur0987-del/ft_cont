@@ -1,0 +1,30 @@
+1c1
+< vector from FT
+---
+> vector from STD
+251,254c251,254
+< Process:         ft_containers [33991]
+< Path:            /Users/USER/Documents/*/ft_containers
+< Load Address:    0x10e5a9000
+< Identifier:      ft_containers
+---
+> Process:         std_containers [33993]
+> Path:            /Users/USER/Documents/*/std_containers
+> Load Address:    0x101b52000
+> Identifier:      std_containers
+258c258
+< Parent Process:  leaks [33990]
+---
+> Parent Process:  leaks [33992]
+260,261c260,261
+< Date/Time:       2022-08-10 17:49:26.602 +0300
+< Launch Time:     2022-08-10 17:49:26.359 +0300
+---
+> Date/Time:       2022-08-10 17:49:26.769 +0300
+> Launch Time:     2022-08-10 17:49:26.671 +0300
+271,272c271,272
+< Process 33991: 168 nodes malloced for 12 KB
+< Process 33991: 0 leaks for 0 total leaked bytes.
+---
+> Process 33993: 168 nodes malloced for 12 KB
+> Process 33993: 0 leaks for 0 total leaked bytes.

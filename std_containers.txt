@@ -196,6 +196,45 @@ Vector max size: 4611686018427387903
 Vector capacity: 7
 
 
+ft::swap v42:
+Vector Iterator date: 42 99 77 77 42 42 
+
+Vector Const Iterator date: 42 99 77 77 42 42 
+
+Vector Reverse Iterator date: 42 42 77 77 99 42 
+
+Vector empty: 0
+Vector size: 6
+Vector max size: 4611686018427387903
+Vector capacity: 20
+
+
+resize_0 v42:
+Vector Iterator date: 42 99 77 
+
+Vector Const Iterator date: 42 99 77 
+
+Vector Reverse Iterator date: 77 99 42 
+
+Vector empty: 0
+Vector size: 3
+Vector max size: 4611686018427387903
+Vector capacity: 20
+
+
+resize_1 v42:
+Vector Iterator date: 42 99 77 111 111 111 111 111 111 111 
+
+Vector Const Iterator date: 42 99 77 111 111 111 111 111 111 111 
+
+Vector Reverse Iterator date: 111 111 111 111 111 111 111 77 99 42 
+
+Vector empty: 0
+Vector size: 10
+Vector max size: 4611686018427387903
+Vector capacity: 20
+
+
 clear v42: 
 Vector Iterator date: 
 
@@ -206,6 +245,29 @@ Vector Reverse Iterator date:
 Vector empty: 1
 Vector size: 0
 Vector max size: 4611686018427387903
-Vector capacity: 7
+Vector capacity: 20
 
+
+Process:         std_containers [33993]
+Path:            /Users/USER/Documents/*/std_containers
+Load Address:    0x101b52000
+Identifier:      std_containers
+Version:         ???
+Code Type:       X86-64
+Platform:        macOS
+Parent Process:  leaks [33992]
+
+Date/Time:       2022-08-10 17:49:26.769 +0300
+Launch Time:     2022-08-10 17:49:26.671 +0300
+OS Version:      macOS 11.5.1 (20G80)
+Report Version:  7
+Analysis Tool:   /usr/bin/leaks
+
+Physical footprint:         356K
+Physical footprint (peak):  356K
+----
+
+leaks Report Version: 4.0
+Process 33993: 168 nodes malloced for 12 KB
+Process 33993: 0 leaks for 0 total leaked bytes.
 
