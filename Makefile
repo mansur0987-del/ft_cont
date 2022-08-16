@@ -6,7 +6,7 @@
 #    By: armaxima <<armaxima@student.42.fr>>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/30 22:55:01 by armaxima          #+#    #+#              #
-#    Updated: 2022/08/08 17:27:42 by armaxima         ###   ########.fr        #
+#    Updated: 2022/08/13 02:01:53 by armaxima         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,10 +21,15 @@ DIR_STD = obj_std
 OBJ_FT = $(DIR_FT)/$(SRC:.cpp=.o)
 OBJ_STD = $(DIR_STD)/$(SRC:.cpp=.o)
 
-INC = vector.hpp \
-	vector_iterator.hpp \
-	random_iterator.hpp \
-	utils.hpp
+INC = vector/vector.hpp \
+	vector/vector_iterator.hpp \
+	vector/random_iterator.hpp \
+	utils/utils.hpp \
+	stack/stack.hpp \
+	map/map.hpp \
+	map/pair.hpp \
+	map/TreeNode.hpp \
+	map/map_iterator.hpp
 
 CPP = c++
 

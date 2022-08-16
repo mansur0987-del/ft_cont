@@ -1,185 +1,79 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector_iterator.hpp                                :+:      :+:    :+:   */
+/*   utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: armaxima <<armaxima@student.42.fr>>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/31 17:34:06 by armaxima          #+#    #+#             */
-/*   Updated: 2022/08/10 12:48:00 by armaxima         ###   ########.fr       */
+/*   Created: 2022/08/01 19:19:36 by armaxima          #+#    #+#             */
+/*   Updated: 2022/08/13 19:47:44 by armaxima         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VECTOR_ITERATOR_HPP
-# define VECTOR_ITERATOR_HPP
+#ifndef UTILS_HPP
+# define UTILS_HPP
 
-# include <memory>
-# include "random_iterator.hpp"
+# include "../vector/vector_iterator.hpp"
 
 namespace ft
 {
-	template <typename T>
-	class iterator : public ft::random_iterator<T>
+	template< bool B, class T = void >
+	struct enable_if
+	{};
+
+	template<class T>
+	struct enable_if<true, T>
 	{
-	public:
-		typedef std::ptrdiff_t					difference_type;
-	protected:
-		typedef random_iterator<T>	iter;
-	public:
-
-		iterator() : random_iterator<T>()
-		{};
-		iterator(T* src) : random_iterator<T>(src)
-		{};
-		iterator(const iterator &src) : random_iterator<T>(src)
-		{};
-		iterator(const random_iterator<T> &src) : random_iterator<T>(src)
-		{};
-		typedef T&					reference;
-		typedef T*					pointer;
-		reference	operator*() const
-		{
-			return *this->ptr_value;
-		}
-		pointer	operator->() const
-		{
-			return this->ptr_value;
-		}
-		iterator&	operator+=(difference_type n)
-		{
-			this->ptr_value += n;
-			return *this;
-		}
-		iterator&	operator-=(difference_type n)
-		{
-			this->ptr_value -= n;
-			return *this;
-		}
-		reference	operator[](difference_type n) const
-		{
-			return this->_value[n];
-		}
-
-		iterator&	operator++()
-		{
-			iter::operator++();
-			return *this;
-		}
-		iterator	operator++(int)
-		{
-			return iter::operator++(0);
-		}
-
-		iterator&	operator--()
-		{
-			iter::operator--();
-			return *this;
-		}
-		iterator	operator--(int)
-		{
-			return iter::operator--(0);
-		}
-
-		iterator	operator+(difference_type n) const
-		{
-			return iter::operator+(n);
-		}
-
-		iterator	operator-(difference_type n) const
-		{
-			return iter::operator-(n);
-		}
-
-		difference_type	operator-(const random_iterator<T> &n) const
-		{
-			return iter::operator-(n);
-		}
-		//friend iterator	operator+(difference_type n, const iterator &it)
-		//{
-		//	return it.operator+(n);
-		//}
+		typedef T type;
 	};
 
-	template <class T>
-	class const_iterator : public random_iterator<T>
+	template <class T> struct is_integral 					{ static const bool value = false;};
+	template <> struct is_integral<bool> 					{ static const bool value = true; };
+	template <> struct is_integral<char> 					{ static const bool value = true; };
+	template <> struct is_integral<short int> 				{ static const bool value = true; };
+	template <> struct is_integral<int> 					{ static const bool value = true; };
+	template <> struct is_integral<long int> 				{ static const bool value = true; };
+	template <> struct is_integral<long long int> 			{ static const bool value = true; };
+	template <> struct is_integral<unsigned char> 			{ static const bool value = true; };
+	template <> struct is_integral<unsigned short int> 		{ static const bool value = true; };
+	template <> struct is_integral<unsigned int> 			{ static const bool value = true; };
+	template <> struct is_integral<unsigned long int> 		{ static const bool value = true; };
+	template <> struct is_integral<unsigned long long int> 	{ static const bool value = true; };
+
+	template<class Iter>
+	bool check(Iter first1, Iter end1, Iter first2)
 	{
-	public:
-		typedef std::ptrdiff_t					difference_type;
-	protected:
-		typedef random_iterator<T>	iter;
-	public:
+		while (first1 != end1)
+		{
+			if (*first1 != *first2)
+				return false;
+			first1++;
+			first2++;
+		}
+		return true;
+	};
 
-		const_iterator() : random_iterator<T>()
-		{};
-		const_iterator(T* src) : random_iterator<T>(src)
-		{};
-		const_iterator(const const_iterator &src) : random_iterator<T>(src)
-		{};
-		const_iterator(const random_iterator<T> &src) : random_iterator<T>(src)
-		{};
-		typedef const T&					reference;
-		typedef const T*					pointer;
-		reference	operator*() const
+	template< class InputIt1, class InputIt2 >
+	bool lexicographical_compare( InputIt1 first1, InputIt1 last1,
+								InputIt2 first2, InputIt2 last2 )
+	{
+		for ( ; (first1 != last1) && (first2 != last2); ++first1, (void) ++first2 )
 		{
-			return *this->ptr_value;
+			if (*first1 < *first2)
+				return true;
+			if (*first2 < *first1)
+				return false;
 		}
-		pointer	operator->() const
-		{
-			return this->ptr_value;
-		}
-		const_iterator&	operator+=(difference_type n)
-		{
-			this->ptr_value += n;
-			return *this;
-		}
-		const_iterator&	operator-=(difference_type n)
-		{
-			this->ptr_value -= n;
-			return *this;
-		}
-		reference	operator[](difference_type n) const
-		{
-			return this->_value[n];
-		}
+		return (first1 == last1) && (first2 != last2);
+	};
 
-		const_iterator&	operator++()
+	template< class T >
+	struct less
+	{
+		bool operator()( const T& lhs, const T& rhs ) const
 		{
-			iter::operator++();
-			return *this;
-		}
-		const_iterator	operator++(int)
-		{
-			return iter::operator++(0);
-		}
-
-		const_iterator&	operator--()
-		{
-			iter::operator--();
-			return *this;
-		}
-		const_iterator	operator--(int)
-		{
-			return iter::operator--(0);
-		}
-
-		const_iterator	operator+(difference_type n) const
-		{
-			return iter::operator+(n);
-		}
-
-		const_iterator	operator-(difference_type n) const
-		{
-			return iter::operator-(n);
-		}
-
-		difference_type	operator-(const random_iterator<T> &n) const
-		{
-			return iter::operator-(n);
-		}
-		//friend iterator	operator+(difference_type n, const iterator &it)
-		//{
-		//	return it.operator+(n);
-		//}
+			return (lhs < rhs);
+		};
 	};
 
 	struct input_iterator_tag { };
@@ -322,10 +216,6 @@ namespace ft
 			return *this->operator+(n);
 		};
 
-		//friend reverse_iterator	operator+(difference_type n, const reverse_iterator &it) {
-		//	return it.operator+(n);
-		//};
-
 		template <class Iter>
 		bool operator==(const reverse_iterator<Iter> &other) const {
 			return this->base_iterator.operator==(other.get_base());
@@ -355,30 +245,7 @@ namespace ft
 		bool	operator>=(const reverse_iterator<Iter> &other) const {
 			return this->base_iterator.operator<=(other.get_base());
 		};
-
-		template <bool, class IsTrue = void>
-		struct enable_if;
-
-		template <class IsTrue>
-		struct enable_if<true, IsTrue> {
-			typedef IsTrue type;
-		};
 	};
-
-	//template<
-	//class Category,
-	//class T,
-	//class Distance = std::ptrdiff_t,
-	//class Pointer = T*,
-	//class Reference = T&
-	//> struct iterator
-	//{
-	//	typedef Category		iterator_category;
-	//	typedef T				value_type;
-	//	typedef Distance		difference_type;
-	//	typedef Pointer			pointer;
-	//	typedef Reference		reference;
-	//};
 }
 
 #endif

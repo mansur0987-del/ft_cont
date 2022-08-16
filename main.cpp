@@ -1,5 +1,11 @@
-#include "vector.hpp"
+#include "./vector/vector.hpp"
+#include "./stack/stack.hpp"
+#include "./map/map.hpp"
+#include "./map/pair.hpp"
+#include "./map/TreeNode.hpp"
 #include <vector>
+#include <stack>
+#include <map>
 #include <iostream>
 
 
@@ -76,7 +82,7 @@ void	print_params_const(const NM::vector<T> &v)
 	std::cout << v.capacity() << std::endl << std::endl  << std::endl;
 }
 
-int	main()
+void check_vector(void)
 {
 	std::cout << "vector from " << V << std::endl;
 	std::cout << "v: " << std::endl;
@@ -161,7 +167,7 @@ int	main()
 	print_vector(v42);
 	print_params(v42);
 
-	std::cout << "ft::swap v42:" << std::endl;
+	std::cout << "swap v42:" << std::endl;
 	NM::swap(v2, v42);
 	print_vector(v42);
 	print_params(v42);
@@ -182,6 +188,264 @@ int	main()
 	print_params(v42);
 
 
+	NM::vector<int> a(4, 5);
+	print_vector(a);
+	print_params(a);
+	NM::vector<int> b(4, 5);
+	print_vector(b);
+	print_params(b);
+	NM::vector<int> c(3, 5);
+	print_vector(c);
+	print_params(c);
+	NM::vector<int> d(4, 10);
+	print_vector(d);
+	print_params(d);
+
+	if (a == b)
+		std::cout << "a == b" << std::endl;
+	if (a == c)
+		std::cout << "a == c" << std::endl;
+	if (a == d)
+		std::cout << "a == d" << std::endl;
+
+	if (a != b)
+		std::cout << "a != b" << std::endl;
+	if (a != c)
+		std::cout << "a != c" << std::endl;
+	if (a != d)
+		std::cout << "a != d" << std::endl;
+
+	if (a < b)
+		std::cout << "a < b" << std::endl;
+	if (a < c)
+		std::cout << "a < c" << std::endl;
+	if (a < d)
+		std::cout << "a < d" << std::endl;
+
+	if (a <= b)
+		std::cout << "a <= b" << std::endl;
+	if (a <= c)
+		std::cout << "a <= c" << std::endl;
+	if (a <= d)
+		std::cout << "a <= d" << std::endl;
+
+	if (a > b)
+		std::cout << "a > b" << std::endl;
+	if (a > c)
+		std::cout << "a > c" << std::endl;
+	if (a > d)
+		std::cout << "a > d" << std::endl;
+
+	if (a >= b)
+		std::cout << "a >= b" << std::endl;
+	if (a >= c)
+		std::cout << "a >= c" << std::endl;
+	if (a >= d)
+		std::cout << "a >= d" << std::endl;
+}
+
+void check_stack(void)
+{
+	std::cout << "Stack from " << V << std::endl;
+	std::cout << "s: " << std::endl;
+	NM::stack<int>	s;
+
+	std::cout << "Stack empty: ";
+	std::cout << s.empty() << std::endl;
+	std::cout << "Stack size: ";
+	std::cout << s.size() << std::endl << std::endl;
+
+	s.push(10);
+	std::cout << "push in stack s 10" << std::endl;
+	std::cout << "Stack empty: ";
+	std::cout << s.empty() << std::endl;
+	std::cout << "Stack size: ";
+	std::cout << s.size() << std::endl;
+	std::cout << "Stack top: ";
+	std::cout << s.top() << std::endl << std::endl;
+
+	s.push(20);
+	std::cout << "push in stack s 20" << std::endl;
+	std::cout << "Stack empty: ";
+	std::cout << s.empty() << std::endl;
+	std::cout << "Stack size: ";
+	std::cout << s.size() << std::endl;
+	std::cout << "Stack top: ";
+	std::cout << s.top() << std::endl << std::endl;
+
+	NM::stack<int>	s1(s);
+	std::cout << "s1 with copy constructor" << std::endl;
+	std::cout << "Stack empty: ";
+	std::cout << s1.empty() << std::endl;
+	std::cout << "Stack size: ";
+	std::cout << s1.size() << std::endl;
+	std::cout << "Stack top: ";
+	std::cout << s1.top() << std::endl << std::endl;
+
+	NM::stack<int>	s2 = s;
+	std::cout << "s2 with assigns" << std::endl;
+	std::cout << "Stack empty: ";
+	std::cout << s2.empty() << std::endl;
+	std::cout << "Stack size: ";
+	std::cout << s2.size() << std::endl;
+	std::cout << "Stack top: ";
+	std::cout << s2.top() << std::endl << std::endl;
+
+	s2.pop();
+	std::cout << "s2 pop" << std::endl;
+	std::cout << "Stack empty: ";
+	std::cout << s2.empty() << std::endl;
+	std::cout << "Stack size: ";
+	std::cout << s2.size() << std::endl;
+	std::cout << "Stack top: ";
+	std::cout << s2.top() << std::endl << std::endl;
+
+	s2.pop();
+	std::cout << "s2 pop" << std::endl;
+	std::cout << "Stack empty: ";
+	std::cout << s2.empty() << std::endl;
+	std::cout << "Stack size: ";
+	std::cout << s2.size() << std::endl;
+
+}
+
+void print_parametr_map(NM::map <int, int> &a)
+{
+	std::cout << "empty = " << a.empty() << std::endl;
+	std::cout << "size = " << a.size() << std::endl;
+	std::cout << "max_size = " << a.max_size() << std::endl;
+	std::cout << std::endl;
+}
+
+void print_map(NM::map<int, int> &a)
+{
+	NM::map<int, int>::iterator it_a_begin = a.begin();
+	NM::map<int, int>::iterator it_a_end = a.end();
+
+	std::cout << "key   value" << std::endl;
+	for (; it_a_begin != it_a_end; it_a_begin++)
+	{
+		std::cout << (*it_a_begin).first << "   =   " << (*it_a_begin).second << std::endl;
+	}
+}
+
+void	check_map(void)
+{
+	std::cout << "map from " << V << std::endl;
+	std::cout << "v: " << std::endl;
+	typedef NM::pair <int,int>  value_type;
+	value_type					p00;
+	value_type					p01;
+	value_type					p02;
+	value_type					p03;
+	value_type					p04;
+	value_type					p05;
+	value_type					p06;
+	p00 = NM::make_pair(5, 55);
+	p01 = NM::make_pair(10, 1010);
+	p02 = NM::make_pair(2, 22);
+	p03 = NM::make_pair(3, 33);
+	p04 = NM::make_pair(7, 77);
+	p05 = NM::make_pair(1, 11);
+	p06 = NM::make_pair(-1, -11);
+
+	NM::map<int, int>::iterator it_a_begin;
+	NM::map<int, int>::iterator it_a_end;
+
+	NM::map <int, int> a;
+	print_parametr_map (a);
+
+	a.insert(p00); // 5, 55
+	a.insert(p01); // 10, 1010
+	a.insert(p02); // 2, 22
+	a.insert(p03); // 3, 33
+	a.insert(p04); // 7, 77
+	a.insert(p05); // 1, 11
+
+	print_map(a);
+	print_parametr_map (a);
+
+	std::cout << "constr copy " << std::endl;
+	NM::map <int, int> b(a);
+	print_map(b);
+	print_parametr_map (b);
+
+	std::cout << "constr copy range " << std::endl;
+	NM::map <int, int> c(a.begin(), a.end());
+	print_map(c);
+	print_parametr_map (c);
+
+
+	std::cout << "insert key = -1, value = -11" << std::endl;
+	c.insert(++(c.begin()), p06); // -1, -11
+	print_map(c);
+	print_parametr_map (c);
+
+	std::cout << "after del key = 3" << std::endl;
+	a.erase(3);
+	print_map(a);
+	print_parametr_map (a);
+
+	std::cout << "after del iterator begin" << std::endl;
+	a.erase(a.begin());
+	print_map(a);
+	print_parametr_map (a);
+
+	std::cout << "after del iterator range begin + 1 and end" << std::endl;
+	it_a_begin = ++a.begin();
+	it_a_end = a.end();
+	a.erase(it_a_begin, it_a_end);
+	print_map(a);
+	print_parametr_map (a);
+
+	std::cout << "befor swap" << std::endl;
+	std::cout << "      a     " << std::endl;
+	std::cout << "____________" << std::endl;
+	print_map(a);
+	print_parametr_map (a);
+	std::cout << "      c     " << std::endl;
+	std::cout << "____________" << std::endl;
+	print_map(c);
+	print_parametr_map (c);
+	a.swap(c);
+	std::cout << "after swap" << std::endl;
+	std::cout << "      a     " << std::endl;
+	std::cout << "____________" << std::endl;
+	print_map(a);
+	print_parametr_map (a);
+	std::cout << "      c     " << std::endl;
+	std::cout << "____________" << std::endl;
+	print_map(c);
+	print_parametr_map (c);
+
+	std::cout << "how in conteiner key = 2? " << a.count(2) << std::endl;
+	std::cout << "how in conteiner key = -1? " << a.count(-1) << std::endl;
+	std::cout << "how in conteiner key = -10? " << a.count(-10) << std::endl << std::endl;
+
+	std::cout << "a == a\t" << (a == a) << std::endl;
+	std::cout << "a != a\t" << (a != a) << std::endl;
+	std::cout << "a == c\t" << (a == c) << std::endl;
+	std::cout << "a != c\t" << (a != c) << std::endl;
+	std::cout << "a < a \t" << (a < a) << std::endl;
+	std::cout << "a <= a\t" << (a <= a) << std::endl;
+	std::cout << "a < c \t" << (a < c) << std::endl;
+	std::cout << "a <= c\t" << (a <= c) << std::endl;
+	std::cout << "a > a \t" << (a > a) << std::endl;
+	std::cout << "a >= a\t" << (a >= a) << std::endl;
+	std::cout << "a > c \t" << (a > c) << std::endl;
+	std::cout << "a >= c\t" << (a >= c) << std::endl;
+
+
+	std::cout << "after clear iterator begin" << std::endl;
+	a.clear();
+	print_parametr_map (a);
+}
+
+int	main()
+{
+	//check_vector();
+	//check_stack();
+	check_map();
 
 	return 0;
 }
