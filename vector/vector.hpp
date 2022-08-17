@@ -6,7 +6,7 @@
 /*   By: armaxima <<armaxima@student.42.fr>>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 17:34:10 by armaxima          #+#    #+#             */
-/*   Updated: 2022/08/13 01:59:31 by armaxima         ###   ########.fr       */
+/*   Updated: 2022/08/17 16:33:07 by armaxima         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,12 @@ namespace ft
 		size_type				_size;
 		size_type				_capacity;
 	public:
-		vector() : _alloc(), _size(0), _capacity(0)
+		vector() : _data(nullptr), _alloc(), _size(0), _capacity(0)
 		{
-			_data = _alloc.allocate(0);
 		};
 
-		explicit vector( const Allocator& alloc ) : _alloc(alloc), _size(0), _capacity(0)
+		explicit vector( const Allocator& alloc ) : _data(nullptr), _alloc(alloc), _size(0), _capacity(0)
 		{
-			_data = _alloc.allocate(0);
 		};
 
 		explicit vector( size_type count,
@@ -68,7 +66,7 @@ namespace ft
 		vector( InputIt first,
 				InputIt last,
 				const Allocator& alloc = Allocator(),
-				typename ft::enable_if<ft::is_integral<typename InputIt::value_type>::value, InputIt>::type = InputIt() ) :
+				typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type = InputIt() ) :
 				_data(NULL), _alloc(alloc), _size(0), _capacity(0)
 		{
 			size_type n = last - first;
@@ -91,10 +89,8 @@ namespace ft
 				_alloc.construct(_data + i, other._data[i]);
 		};
 
-		~vector()
+		virtual ~vector()
 		{
-			for (size_type i = 0; i < _size; i++)
-				_alloc.destroy(_data + i);
 			_alloc.deallocate(_data, _capacity);
 		};
 
@@ -133,7 +129,7 @@ namespace ft
 		template< class InputIt >
 		void assign(	InputIt first,
 						InputIt last,
-						typename ft::enable_if<ft::is_integral<typename InputIt::value_type>::value, InputIt>::type = InputIt() )
+						typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type = InputIt() )
 		{
 			size_type n = last - first;
 			for (size_type i = 0; i < _size; i++)
@@ -298,7 +294,13 @@ namespace ft
 
 		void push_back( const T& value )
 		{
-			if (this->_capacity == this->_size)
+			if (this->_capacity == 0)
+			{
+				this->_alloc.deallocate(_data, _capacity);
+				this->_capacity = 1;
+				this->_data = this->_alloc.allocate(this->_capacity);
+			}
+			else if (this->_capacity <= this->_size)
 			{
 				this->_capacity *= 2;
 				value_type* tmp = this->_alloc.allocate(this->_capacity);
@@ -360,7 +362,7 @@ namespace ft
 
 		template< class InputIt >
 		void insert( iterator pos, InputIt first, InputIt last ,
-					typename ft::enable_if<ft::is_integral<typename InputIt::value_type>::value, InputIt>::type = InputIt() )
+					typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type = InputIt() )
 		{
 			size_type pos_n = pos - begin();
 			size_type count = last - first;

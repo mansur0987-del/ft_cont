@@ -1,30 +1,46 @@
 1c1
+< check intra checker for FT
+---
+> check intra checker for STD
+4c4
+< vector from FT
+---
+> vector from STD
+311c311
+< Stack from FT
+---
+> Stack from STD
+344c344
 < map from FT
 ---
 > map from STD
-150,153c150,153
-< Process:         ft_containers [37406]
+499,502c499,502
+< Process:         ft_containers [29751]
 < Path:            /Users/USER/Documents/*/ft_containers
-< Load Address:    0x101060000
+< Load Address:    0x104c26000
 < Identifier:      ft_containers
 ---
-> Process:         std_containers [37408]
+> Process:         std_containers [29762]
 > Path:            /Users/USER/Documents/*/std_containers
-> Load Address:    0x101999000
+> Load Address:    0x103746000
 > Identifier:      std_containers
-157c157
-< Parent Process:  leaks [37405]
+506c506
+< Parent Process:  leaks [29750]
 ---
-> Parent Process:  leaks [37407]
-159,160c159,160
-< Date/Time:       2022-08-16 19:38:00.165 +0300
-< Launch Time:     2022-08-16 19:37:59.792 +0300
+> Parent Process:  leaks [29761]
+508,509c508,509
+< Date/Time:       2022-08-17 16:55:48.528 +0300
+< Launch Time:     2022-08-17 16:55:38.816 +0300
 ---
-> Date/Time:       2022-08-16 19:38:00.419 +0300
-> Launch Time:     2022-08-16 19:38:00.223 +0300
-170,171c170,171
-< Process 37406: 169 nodes malloced for 12 KB
-< Process 37406: 0 leaks for 0 total leaked bytes.
+> Date/Time:       2022-08-17 16:55:57.192 +0300
+> Launch Time:     2022-08-17 16:55:48.587 +0300
+514c514
+< Physical footprint:         12.4M
 ---
-> Process 37408: 169 nodes malloced for 12 KB
-> Process 37408: 0 leaks for 0 total leaked bytes.
+> Physical footprint:         11.6M
+519,520c519,520
+< Process 29751: 171 nodes malloced for 13 KB
+< Process 29751: 0 leaks for 0 total leaked bytes.
+---
+> Process 29762: 171 nodes malloced for 13 KB
+> Process 29762: 0 leaks for 0 total leaked bytes.

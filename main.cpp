@@ -1,20 +1,52 @@
-#include "./vector/vector.hpp"
-#include "./stack/stack.hpp"
-#include "./map/map.hpp"
-#include "./map/pair.hpp"
-#include "./map/TreeNode.hpp"
-#include <vector>
-#include <stack>
-#include <map>
+#include <string>
+#include <deque>
 #include <iostream>
-
+#include <stdlib.h>
 
 #ifndef NM
-# define V "FT"
-# define NM ft
+	#define V "FT"
+	#define NM ft
+	#include "./vector/vector.hpp"
+	#include "./stack/stack.hpp"
+	#include "./map/map.hpp"
+	#include "./map/pair.hpp"
+	#include "./map/TreeNode.hpp"
 #else
-# define V "STD"
+	#define V "STD"
+	#include <map>
+	#include <stack>
+	#include <vector>
 #endif
+
+#define MAX_RAM 4294967296
+#define BUFFER_SIZE 4096
+struct Buffer
+{
+	int idx;
+	char buff[BUFFER_SIZE];
+};
+
+
+#define COUNT (MAX_RAM / (int)sizeof(Buffer))
+
+template<typename T>
+class MutantStack : public NM::stack<T>
+{
+public:
+	MutantStack() {}
+	MutantStack(const MutantStack<T>& src) { *this = src; }
+	MutantStack<T>& operator=(const MutantStack<T>& rhs)
+	{
+		this->c = rhs.c;
+		return *this;
+	}
+	~MutantStack() {}
+
+	typedef typename NM::stack<T>::container_type::iterator iterator;
+
+	iterator begin() { return this->c.begin(); }
+	iterator end() { return this->c.end(); }
+};
 
 template <class T>
 void	print_vector(NM::vector<T> v)
@@ -375,6 +407,11 @@ void	check_map(void)
 	print_map(c);
 	print_parametr_map (c);
 
+	std::cout << "at 3" << std::endl;
+	std::cout << a.at(3) << std::endl << std::endl;
+
+	std::cout << "[3]" << std::endl;
+	std::cout << a[3] << std::endl << std::endl;
 
 	std::cout << "insert key = -1, value = -11" << std::endl;
 	c.insert(++(c.begin()), p06); // -1, -11
@@ -441,11 +478,89 @@ void	check_map(void)
 	print_parametr_map (a);
 }
 
-int	main()
+int check_intra(int argc, char** argv) {
+	std::cout << "check intra checker for " << V << std::endl;
+	//if (argc != 2)
+	//{
+	//	std::cerr << "Usage: ./test seed" << std::endl;
+	//	std::cerr << "Provide a seed please" << std::endl;
+	//	std::cerr << "Count value:" << COUNT << std::endl;
+	//	return 1;
+	//}
+	//const int seed = atoi(argv[1]);
+	(void) argc;
+	(void) argv;
+	srand(1);
+
+	NM::vector<std::string> vector_str;
+	NM::vector<int> vector_int;
+	NM::stack<int> stack_int;
+	NM::vector<Buffer> vector_buffer;
+	NM::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
+	NM::map<int, int> map_int;
+
+	for (int i = 0; i < COUNT; i++)
+	{
+		vector_buffer.push_back(Buffer());
+	}
+
+	for (int i = 0; i < COUNT; i++)
+	{
+		const int idx = rand() % COUNT;
+		vector_buffer[idx].idx = 5;
+	}
+	NM::vector<Buffer>().swap(vector_buffer);
+
+	try
+	{
+		for (int i = 0; i < COUNT; i++)
+		{
+			const int idx = rand() % COUNT;
+			vector_buffer.at(idx);
+			std::cerr << "Error: THIS VECTOR SHOULD BE EMPTY!!" <<std::endl;
+		}
+	}
+	catch(const std::exception& e)
+	{
+		//NORMAL ! :P
+	}
+
+	for (int i = 0; i < COUNT; ++i)
+	{
+		map_int.insert(NM::make_pair(rand(), rand()));
+	}
+
+	int sum = 0;
+	for (int i = 0; i < 10000; i++)
+	{
+		int access = rand();
+		sum += map_int[access];
+	}
+	std::cout << "should be constant with the same seed: " << sum << std::endl;
+
+	{
+		NM::map<int, int> copy = map_int;
+	}
+
+	MutantStack<char> iterable_stack;
+	for (char letter = 'a'; letter <= 'z'; letter++)
+		iterable_stack.push(letter);
+	for (MutantStack<char>::iterator it = iterable_stack.begin(); it != iterable_stack.end(); it++)
+	{
+		std::cout << *it;
+	}
+	std::cout << std::endl;
+	return (0);
+}
+
+int	main(int argc, char** argv)
 {
-	//check_vector();
-	//check_stack();
+	check_intra(argc, argv);
+	check_vector();
+	check_stack();
 	check_map();
 
 	return 0;
 }
+
+

@@ -6,7 +6,7 @@
 /*   By: armaxima <<armaxima@student.42.fr>>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 10:40:53 by armaxima          #+#    #+#             */
-/*   Updated: 2022/08/16 19:37:56 by armaxima         ###   ########.fr       */
+/*   Updated: 2022/08/17 16:54:50 by armaxima         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,15 +100,55 @@ namespace ft
 		{
 			if (this == &other)
 				return (*this);
-			this->ClearTree(_root);
-			this->insert(other.begin(), other.end());
+			if (this->_size != 0)
+				this->ClearTree(_root);
+			if (other._size == 0)
+				return (*this);
+			CopyNode(other._root);
 			return *this;
 		};
+
+		void CopyNode(node_type *other)
+		{
+			this->insert(other->data);
+			if (other->left != nullptr)
+				CopyNode(other->left);
+			if (other->right != nullptr)
+				CopyNode(other->right);
+		}
 
 		allocator_type get_allocator() const
 		{
 			return (this->_alloc);
 		};
+
+		T& at( const Key& key )
+		{
+			node_type *tmp = find_key(key, this->_root);
+
+			if (tmp == nullptr)
+				throw std::out_of_range("map");
+			return (tmp->data.second);
+		}
+
+		const T& at( const Key& key ) const
+		{
+			node_type *tmp = find_key(key, this->_root);
+
+			if (tmp == nullptr)
+				throw std::out_of_range("map");
+			return (tmp->data.second);
+		}
+
+		T& operator[]( const Key& key )
+		{
+			iterator a = find(key);
+
+			if (a == end())
+				return (insert(ft::make_pair(key, T())).first->second);
+
+			return (a->second);
+		}
 
 		iterator begin()
 		{
@@ -224,7 +264,7 @@ namespace ft
 			InputIt tmp = first;
 			for (; tmp != last; tmp++)
 			{
-				insert((*tmp));
+				insert(*tmp);
 			}
 		};
 
@@ -282,28 +322,20 @@ namespace ft
 
 		iterator find( const Key& key )
 		{
-			iterator	it = this->begin();
-			iterator	ite = this->end();
+			node_type *tmp = find_key(key, this->_root);
 
-			for (; it != ite; it++)
-			{
-				if (!(this->_comp(it->first, key)) && !(this->_comp(key, it->first)))
-					break ;
-			}
-			return it;
+			if (tmp == nullptr)
+				return (end());
+			return (iterator(tmp));
 		}
 
 		const_iterator find( const Key& key ) const
 		{
-			const_iterator it = this->begin();
-			const_iterator ite = this->end();
+			node_type *tmp = find_key(key, this->_root);
 
-			for (; it != ite; it++)
-				{
-					if (!(this->_comp(it->first, key)) && !(this->_comp(key, it->first)))
-						break ;
-				}
-			return it;
+			if (tmp == nullptr)
+				return (end());
+			return (const_iterator(tmp));
 		}
 
 		ft::pair<iterator,iterator> equal_range( const Key& key )
@@ -536,6 +568,25 @@ namespace ft
 			this->_alloc.destroy(node);
 			this->_alloc.deallocate(node, 1);
 			node = nullptr;
+		};
+
+		node_type *find_key(const Key& key, node_type *node) const
+		{
+			if (node == nullptr)
+				return (node);
+			else if (_comp(key, node->data.first))
+			{
+				return (find_key(key, node->left));
+			}
+			else if (_comp(node->data.first, key))
+			{
+				return (find_key(key, node->right));
+			}
+			else
+			{
+				return(node);
+			}
+			return (node);
 		};
 	};
 

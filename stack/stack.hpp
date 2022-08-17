@@ -6,7 +6,7 @@
 /*   By: armaxima <<armaxima@student.42.fr>>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 19:21:05 by armaxima          #+#    #+#             */
-/*   Updated: 2022/08/13 19:48:06 by armaxima         ###   ########.fr       */
+/*   Updated: 2022/08/17 16:30:29 by armaxima         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 # define STACK_HPP
 
 # include "../vector/vector.hpp"
-
+#include <vector>
 namespace ft
 {
-	template< class T, class Container = std::vector<T> >
+	template< class T, class Container = ft::vector<T> >
 	class stack
 	{
 	public:
