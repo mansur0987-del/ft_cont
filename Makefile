@@ -6,7 +6,7 @@
 #    By: armaxima <<armaxima@student.42.fr>>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/30 22:55:01 by armaxima          #+#    #+#              #
-#    Updated: 2022/08/17 17:21:48 by armaxima         ###   ########.fr        #
+#    Updated: 2022/08/17 17:27:59 by armaxima         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ $(NAME_FT): $(OBJ_FT) $(INC) $(SRC)
 	$(CPP) $(FLAGS) $(OBJ_FT) -o $(NAME_FT)
 
 clean:
-	rm -rf $(OBJ_FT) $(OBJ_STD)
+	rm -rf $(DIR_FT) $(DIR_FT)
 
 fclean: clean
 	rm -rf $(NAME_FT) $(NAME_STD)
